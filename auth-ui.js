@@ -19,6 +19,7 @@ function renderDropdown(user) {
         <strong>${displayName}</strong><br>
         <small>${email}</small>
       </div>
+      <a href="dashboard.html">Open Dashboard</a>
       <a href="growai.html">Open GrowZone AI</a>
       <button id="logoutBtn" type="button">Logout</button>
     `;

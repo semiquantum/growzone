@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowZone Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --ink: #102a43;
+      --muted: #5e6c84;
+      --brand: #146c94;
+      --brand-soft: #d7edf7;
+      --accent: #f08a24;
+      --card: #ffffff;
+      --border: #dfebf3;
+      --ok: #1f8f4d;
+      --shadow: 0 12px 30px rgba(16, 42, 67, 0.11);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(240, 138, 36, 0.12), transparent 35%),
+        radial-gradient(circle at 85% 8%, rgba(20, 108, 148, 0.12), transparent 30%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      font-family: "Sora", sans-serif;
+      font-size: 1.3rem;
+      color: var(--brand);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .hero {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2 {
+      font-family: "Sora", sans-serif;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .status {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .status-title {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .status-value {
+      margin-top: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .ok {
+      color: var(--ok);
+    }
+
+    .cards {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick {
+      background: linear-gradient(145deg, #ffffff, #f8fcff);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .quick h3 {
+      font-family: "Sora", sans-serif;
+      font-size: 1rem;
+      margin-bottom: 7px;
+    }
+
+    .quick p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">GrowZone Dashboard</div>
+      <div class="actions">
+        <a class="btn btn-ghost" href="index.html">Website</a>
+        <a class="btn btn-primary" href="growai.html">Open AI Chat</a>
+        <button class="btn btn-ghost" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <article class="panel">
+        <h1 id="welcomeTitle">Welcome back</h1>
+        <p class="muted">Your account is active. Use the AI assistant to plan growth, marketing, and product strategy.</p>
+        <div class="status-grid">
+          <div class="status">
+            <div class="status-title">Firebase Login</div>
+            <div class="status-value ok" id="firebaseStatus">Connected</div>
+          </div>
+          <div class="status">
+            <div class="status-title">Hugging Face API</div>
+            <div class="status-value" id="hfStatus">Checking...</div>
+          </div>
+          <div class="status">
+            <div class="status-title">Logged in as</div>
+            <div class="status-value" id="userEmail">-</div>
+          </div>
+          <div class="status">
+            <div class="status-title">Bot Endpoint</div>
+            <div class="status-value" id="endpointStatus">/query</div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="panel">
+        <h2>Quick Actions</h2>
+        <div class="cards">
+          <div class="quick">
+            <h3>Start New Chat</h3>
+            <p>Open the assistant and ask your first growth question.</p>
+            <a class="btn btn-primary" href="growai.html">Go to Chat</a>
+          </div>
+          <div class="quick">
+            <h3>Feature Overview</h3>
+            <p>See your available GrowZone platform features.</p>
+            <a class="btn btn-ghost" href="feature.html">View Features</a>
+          </div>
+          <div class="quick">
+            <h3>Pricing Plans</h3>
+            <p>Compare plans and choose what fits your startup.</p>
+            <a class="btn btn-ghost" href="pricing.html">View Pricing</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script type="module">
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { auth } from "./firebase-config.js";
+
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    const userEmail = document.getElementById("userEmail");
+    const hfStatus = document.getElementById("hfStatus");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const displayName = user.displayName || "GrowZone User";
+      welcomeTitle.textContent = `Welcome back, ${displayName}`;
+      userEmail.textContent = user.email || "No email";
+
+      try {
+        const response = await fetch("/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ q: "Say online in one word" })
+        });
+
+        if (!response.ok) {
+          hfStatus.textContent = `Error ${response.status}`;
+          hfStatus.style.color = "#c0392b";
+          return;
+        }
+
+        const data = await response.json();
+        const answer = (data.answer || "").toLowerCase();
+        if (answer.includes("missing hf_api_key") || answer.includes("hugging face error") || answer.includes("request failed")) {
+          hfStatus.textContent = "Not ready";
+          hfStatus.style.color = "#c0392b";
+        } else {
+          hfStatus.textContent = "Connected";
+          hfStatus.style.color = "#1f8f4d";
+        }
+      } catch (error) {
+        hfStatus.textContent = "Unavailable";
+        hfStatus.style.color = "#c0392b";
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
