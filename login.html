@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowZone Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0d1b2a;
+      --accent: #e76f51;
+      --accent-2: #2a9d8f;
+      --sand: #f4f1de;
+      --cloud: #ffffff;
+      --muted: #6c757d;
+      --radius: 16px;
+      --shadow: 0 16px 40px rgba(13, 27, 42, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(231, 111, 81, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 75%, rgba(42, 157, 143, 0.16), transparent 40%),
+        linear-gradient(135deg, #fef6e4, #e7f6f2 45%, #fdf8f1);
+      padding: 24px;
+    }
+
+    .auth-shell {
+      width: min(940px, 100%);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      overflow: hidden;
+    }
+
+    .auth-aside {
+      padding: 48px 40px;
+      color: #fff;
+      background: linear-gradient(160deg, #1d3557, #457b9d 55%, #2a9d8f);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .auth-aside h1 {
+      font-family: "Sora", sans-serif;
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .auth-aside p {
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .auth-main {
+      padding: 40px;
+      background: var(--cloud);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: #f3f3f3;
+      color: var(--ink);
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tab-btn.active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .form-block {
+      display: none;
+      animation: fadeIn 0.24s ease;
+    }
+
+    .form-block.active {
+      display: block;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 10px;
+      border: 1px solid #dfe3e8;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .btn-google {
+      background: var(--sand);
+      color: #222;
+      margin-top: 12px;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: #1d3557;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .auth-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-aside {
+        padding: 32px 28px;
+      }
+
+      .auth-main {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-shell">
+    <aside class="auth-aside">
+      <h1>Welcome to GrowZone AI</h1>
+      <p>Sign in to save your growth plans, chat history, and startup strategy progress across all devices.</p>
+      <p>Use your email account or continue with Google in one click.</p>
+    </aside>
+
+    <main class="auth-main">
+      <div class="tabs">
+        <button class="tab-btn active" id="signinTab" type="button">Sign In</button>
+        <button class="tab-btn" id="signupTab" type="button">Create Account</button>
+      </div>
+
+      <section id="signinForm" class="form-block active">
+        <div class="field">
+          <label for="signinEmail">Email</label>
+          <input id="signinEmail" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="signinPassword">Password</label>
+          <input id="signinPassword" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary" id="signinBtn" type="button">Sign In</button>
+      </section>
+
+      <section id="signupForm" class="form-block">
+        <div class="field">
+          <label for="signupName">Display Name</label>
+          <input id="signupName" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="signupEmail">Email</label>
+          <input id="signupEmail" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <input id="signupPassword" type="password" autocomplete="new-password" required>
+        </div>
+        <button class="btn btn-primary" id="signupBtn" type="button">Create Account</button>
+      </section>
+
+      <button class="btn btn-google" id="googleBtn" type="button">Continue with Google</button>
+      <p class="status" id="authStatus"></p>
+      <a class="home-link" href="index.html">Back to Home</a>
+    </main>
+  </div>
+
+  <script type="module">
+    import {
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { auth, googleProvider } from "./firebase-config.js";
+
+    const signinTab = document.getElementById("signinTab");
+    const signupTab = document.getElementById("signupTab");
+    const signinForm = document.getElementById("signinForm");
+    const signupForm = document.getElementById("signupForm");
+    const statusEl = document.getElementById("authStatus");
+
+    function showStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.style.color = isError ? "#d62828" : "#2a9d8f";
+    }
+
+    function setTab(isSignin) {
+      signinTab.classList.toggle("active", isSignin);
+      signupTab.classList.toggle("active", !isSignin);
+      signinForm.classList.toggle("active", isSignin);
+      signupForm.classList.toggle("active", !isSignin);
+      if (!isSignin) {
+        window.location.hash = "signup";
+      } else {
+        history.replaceState(null, "", " ");
+      }
+    }
+
+    signinTab.addEventListener("click", () => setTab(true));
+    signupTab.addEventListener("click", () => setTab(false));
+
+    if (window.location.hash === "#signup") {
+      setTab(false);
+    }
+
+    document.getElementById("signinBtn").addEventListener("click", async () => {
+      const email = document.getElementById("signinEmail").value.trim();
+      const password = document.getElementById("signinPassword").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showStatus("Signed in successfully. Redirecting...");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 500);
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value;
+
+      try {
+        const credential = await createUserWithEmailAndPassword(auth, email, password);
+        if (name) {
+          await updateProfile(credential.user, { displayName: name });
+        }
+        showStatus("Account created successfully. Redirecting...");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 500);
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+
+    document.getElementById("googleBtn").addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, googleProvider);
+        showStatus("Google login successful. Redirecting...");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 500);
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - GrowZone AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables - Consistent with Previous Pages */
+        :root {
+            --primary: #5E3BEE;
+            --secondary: #1E1E2C;
+            --accent: #FF6B6B;
+            --background: #F8F9FC;
+            --text: #2D2E32;
+            --text-light: #767676;
+            --border: #E5E7EB;
+            --white: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark theme variables */
+        .dark-theme {
+            --background: #1E1E2C;
+            --text: #F8F9FC;
+            --text-light: #A0A0A0;
+            --border: #2D2E32;
+            --white: #252836;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        /* Button Styles - Consistent */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a2fbe;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(94, 59, 238, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Header and Navigation - Consistent */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(248, 249, 252, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .dark-theme header {
+            background: rgba(30, 30, 44, 0.95);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            margin-left: auto;   /* push nav towards right */
+            margin-right: 15px; 
+        }
+
+        .nav-links a {
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .profile-toggle {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+                .profile-dropdown {
+  position: absolute;
+  top: 60px; /* below header */
+  right: 20px;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.profile-dropdown.show {
+  display: flex;
+}
+
+.profile-dropdown a, 
+.profile-dropdown button {
+  padding: 10px 15px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.profile-dropdown a:hover, 
+.profile-dropdown button:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+
+.profile-toggle:hover {
+  background: #4a2fbe;
+  transform: scale(1.05);
+}
+        /* Contact Hero Section */
+        .contact-hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .contact-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .contact-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+
+        .dark-theme .contact-section {
+            background-color: var(--secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background-color: var(--background);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .dark-theme .contact-form {
+            background-color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--white);
+            color: var(--text);
+        }
+
+        .dark-theme .form-group input,
+        .dark-theme .form-group textarea {
+            background-color: var(--secondary);
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(94, 59, 238, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .form-message.success {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+            display: block;
+        }
+
+        .form-message.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            display: block;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background-color: var(--background);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-theme .info-item {
+            background-color: var(--white);
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(94, 59, 238, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .info-text h4 {
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+
+        .info-text p {
+            color: var(--text-light);
+        }
+
+        /* Social Media */
+        .social-section {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background-color: #4a2fbe;
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        /* Map Section */
+        .map-section {
+            padding: 80px 0;
+            background-color: var(--background);
+            text-align: center;
+        }
+
+        .dark-theme .map-section {
+            background-color: var(--white);
+        }
+
+        .map-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 500px;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Footer - Consistent with Previous Pages */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .social-links.footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links.footer-social a {
+            color: white;
+            font-size: 1.2rem;
+            width: auto;
+            height: auto;
+            background: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Chat Button - Consistent */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-button i {
+            font-size: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .contact-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+/*
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .contact-hero {
+                padding: 80px 0 60px;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-form {
+                padding: 30px 20px;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+        } */
+          @media (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        flex-direction: column;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+
+        /* animation setup */
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-links.show {
+        max-height: 150px; /* ≈ 3 lines */
+        opacity: 1;
+        overflow-y: auto;  /* scroll for more */
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+    .contact-hero {
+                padding: 80px 0 60px;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-form {
+                padding: 30px 20px;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+}
+
+        /*contact*/
+            .form-message {
+  display: none;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.form-message.success {
+  background: #d4edda;
+  color: #155724;
+}
+.form-message.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+         /*Bot CSS Code */
+        /* GrowZone AI Chat Styles */
+#growzone-chat-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
+  z-index: 9999;
+  transition: var(--transition);
+}
+
+#growzone-chat-icon:hover {
+  transform: scale(1.1);
+}
+
+#growzone-chat-widget {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 300px;
+  max-height: 400px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+}
+
+#growzone-chat-header {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#growzone-chat-body {
+  padding: 10px;
+  height: 250px;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+#growzone-chat-input {
+  display: flex;
+  border-top: 1px solid var(--border);
+}
+
+#growzone-chat-input input {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+}
+
+#growzone-chat-input button {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">GrowZone</a>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="feature.html">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="growai.html">GrowZone Ai</a>
+                <a href="contact.html" class="active">Contact</a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="profile-toggle" id="profileToggle">
+                <i class="fas fa-user"></i>
+            </button>
+            <!-- Profile Dropdown -->
+<div class="profile-dropdown" id="profileDropdown">
+  <!-- content will be injected by JS -->
+</div>
+        </div>
+    </header>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Get In Touch</h1>
+            <p>Have questions about our AI platform or need help getting started? We're here to assist you on your startup journey. Reach out today!</p>
+            <a href="#contact-form" class="btn btn-primary">Send a Message</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact-form">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">Whether you have a question about our features, need pricing details, or want to discuss a partnership, our team is ready to help.</p>
+            </div>
+            
+            <div class="contact-content">
+                <form class="contact-form" id="contactForm">
+                    <h3 style="margin-bottom: 20px; color: var(--text);">Send Us a Message</h3>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                                                <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                   
+                    <div class="form-message success" id="successMessage">
+                        <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.
+                    </div>
+                    
+                    <div class="form-message error" id="errorMessage">
+                        <i class="fas fa-exclamation-circle"></i> Please fill in all required fields correctly.
+                    </div>
+                </form>
+                
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Our Location</h4>
+                            <p>Sharda University<br>
+plot no 32, 34, Knowledge Park III, Greater Noida, Uttar Pradesh 201310
+</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Phone Number</h4>
+                            <p>+910123456789<br>Mon-Fri, 9AM-5PM PST</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Email Address</h4>
+                            <p>hello@growzone.ai<br>support@growzone.ai</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-text">
+                            <h4>Business Hours</h4>
+                            <p>Monday - Friday: 9AM - 6PM<br>Weekend: Emergency Support Only</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section">
+        <div class="container">
+            <h3 style="margin-bottom: 20px; color: var(--text);">Follow Us On Social Media</h3>
+            <p style="color: var(--text-light); margin-bottom: 30px;">Stay updated with the latest news, tips, and success stories from our community.</p>
+            
+            <div class="social-links">
+                <a href="twitter.com" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="linkedin.com" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="instagram.com" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="facebook.com" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="youtube.com" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Visit Our Office</h2>
+                <p class="section-subtitle">Come see us at our headquarters in the heart of Sharda University.</p>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d277047.30281100684!2d77.30303242428934!3d28.454587648155268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cea0f7b91511b%3A0x486f13bd49e5e7ae!2sSharda%20University!5e0!3m2!1sen!2sin!4v1758527577866!5m2!1sen!2sin" width="800" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <p>Interactive Map Location<br><small>Sharda University<br>plot no 32, 34, Knowledge Park III, Greater Noida, Uttar Pradesh 201310
+</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>GrowZone</h3>
+                    <p>AI-powered business growth assistant for startups and entrepreneurs.</p>
+                    <div class="social-links footer-social">
+                        <a href="twitter.com"><i class="fab fa-twitter"></i></a>
+                        <a href="linkedin.com"><i class="fab fa-linkedin"></i></a>
+                        <a href="instagram.com"><i class="fab fa-instagram"></i></a>
+                        <a href="facebook.com"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="semiquantum.live">Careers</a></li>
+                        <li><a href="semiquantum.live">Blog</a></li>
+                        <li><a href="semiquantum.live">Press</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="semiquantum.live">Help Center</a></li>
+                        <li><a href="semiquantum.live">Partners</a></li>
+                        <li><a href="semiquantum.live">Community</a></li>
+                        <li><a href="semiquantum.live">Events</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="semiquantum.live">Cookie Policy</a></li>
+                        <li><a href="semiquantum.live">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GrowZone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GrowZone AI Chat Widget -->
+<div id="growzone-chat-icon">
+    <i class="fas fa-comment"></i>
+</div>
+
+<div id="growzone-chat-widget">
+  <div id="growzone-chat-header">
+     GrowZone AI
+    <span id="growzone-chat-close">✖</span>
+  </div>
+  <div id="growzone-chat-body"></div>
+  <div id="growzone-chat-input">
+    <input type="text" id="growzone-msg" placeholder="Ask GrowZone AI..." />
+    <button id="growzone-send">Send</button>
+  </div>
+</div>
+<script type="module" src="auth-ui.js"></script>
+<!--Bot JS Code-->
+<script>
+    // GrowZone AI Chat JS
+const chatIcon = document.getElementById("growzone-chat-icon");
+const chatWidget = document.getElementById("growzone-chat-widget");
+const chatClose = document.getElementById("growzone-chat-close");
+const chatBody = document.getElementById("growzone-chat-body");
+const chatInput = document.getElementById("growzone-msg");
+const chatSend = document.getElementById("growzone-send");
+
+// Open / Close widget
+chatIcon.addEventListener("click", () => {
+  chatWidget.style.display = "flex";
+});
+chatClose.addEventListener("click", () => {
+  chatWidget.style.display = "none";
+});
+
+// Append messages to chat
+function appendMessage(sender, text) {
+  const msg = document.createElement("div");
+  msg.textContent = text;
+  msg.style.margin = "5px 0";
+  msg.style.fontWeight = sender === "user" ? "bold" : "normal";
+  chatBody.appendChild(msg);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Send message function
+// Send message function
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  // Check for greetings
+  const greetings = ["hi", "hii", "hiii", "hiiii", "hlo", "helo", "hello", "hey", "heyy", "heyyy",
+    "good morning", "good afternoon", "good evening", "gm", "ga", "ge",
+    "hola", "howdy", "hiya", "yo", "sup", "wassup", "hi there", "hello there",
+    "hey there", "hiyaa", "heya", "helloo", "hii there", "hiii there",
+    "hi growzone", "hello growzone", "hii growzone", "hey growzone", "good day",
+    "morning", "afternoon", "evening", "hi friend", "hello friend",
+    "hi buddy", "hello buddy", "hey buddy", "hiya buddy", "hi all", "hello all",
+    "hii all", "hey all", "hey guys", "hi guys", "hello guys"];
+  if (greetings.includes(text.toLowerCase())) {
+    appendMessage("user", text);
+    appendMessage("bot", "Hello! Welcome to GrowZone AI 👋");
+    chatInput.value = "";
+    return; // skip backend call
+  }
+  appendMessage("user", text);
+  chatInput.value = "";
+
+  appendMessage("bot", "Thinking...");
+
+  try {
+    const response = await fetch("/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: text })
+    });
+
+    if (response.body) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let botText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        botText += decoder.decode(value, { stream: true });
+        chatBody.lastChild.textContent = botText;
+      }
+    } else {
+      const data = await response.json();
+      chatBody.lastChild.textContent = data.answer || "No response";
+    }
+  } catch (err) {
+    //chatBody.lastChild.textContent = "[Error]: " + err.message;
+     chatBody.lastChild.textContent = "Sorry, I can't answer right now. Try after some time. – GrowZone AI";
+  }
+}
+
+chatSend.addEventListener("click", sendMessage);
+chatInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+</script>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            // Save theme preference to localStorage
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDark);
+        });
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('darkTheme');
+        if (savedTheme === 'true') {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Form Validation
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (name && email && subject && message) {
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    errorMessage.textContent = 'Please enter a valid email address.';
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
+                    return;
+                }
+                
+                // Simulate form submission success
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            } else {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+        });
+        
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const form = document.getElementById("contactForm");
+                        const successMsg = document.getElementById("successMessage");
+                        const errorMsg = document.getElementById("errorMessage");
+
+                        // hide messages initially
+                        successMsg.style.display = "none";
+                        errorMsg.style.display = "none";
+
+                        form.addEventListener("submit", function (e) {
+                            e.preventDefault();
+
+                            let name = document.getElementById("name").value.trim();
+                            let email = document.getElementById("email").value.trim();
+                            let subject = document.getElementById("subject").value.trim();
+                            let message = document.getElementById("message").value.trim();
+
+                            // reset messages
+                         //   successMsg.style.display = "none";
+                         //  errorMsg.style.display = "none";
+
+                            if (name && email && subject && message) {
+                            successMsg.style.display = "block";
+                            form.reset();
+                            }                                            
+                          //  else {
+                          //  errorMsg.style.display = "block";
+                           // }
+                        });
+                        });
+                        </script>
+
+</body>
+</html>
+

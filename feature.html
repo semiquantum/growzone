@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - GrowZone AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables - Consistent with Previous Pages */
+        :root {
+            --primary: #5E3BEE;
+            --secondary: #1E1E2C;
+            --accent: #FF6B6B;
+            --background: #F8F9FC;
+            --text: #2D2E32;
+            --text-light: #767676;
+            --border: #E5E7EB;
+            --white: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark theme variables */
+        .dark-theme {
+            --background: #1E1E2C;
+            --text: #F8F9FC;
+            --text-light: #A0A0A0;
+            --border: #2D2E32;
+            --white: #252836;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        /* Button Styles - Consistent */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a2fbe;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(94, 59, 238, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Header and Navigation - Consistent */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(248, 249, 252, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .dark-theme header {
+            background: rgba(30, 30, 44, 0.95);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            margin-left: auto;   /* push nav towards right */
+            margin-right: 15px; 
+        }
+
+        .nav-links a {
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .profile-toggle {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+                .profile-dropdown {
+  position: absolute;
+  top: 60px; /* below header */
+  right: 20px;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.profile-dropdown.show {
+  display: flex;
+}
+
+.profile-dropdown a, 
+.profile-dropdown button {
+  padding: 10px 15px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.profile-dropdown a:hover, 
+.profile-dropdown button:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+
+.profile-toggle:hover {
+  background: #4a2fbe;
+  transform: scale(1.05);
+}
+        /* Features Hero Section */
+        .features-hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .features-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .features-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .features-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+
+        .dark-theme .features-section {
+            background-color: var(--secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            padding: 40px 30px;
+            border-radius: 16px;
+            background-color: var(--background);
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-theme .feature-card {
+            background-color: var(--white);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(94, 59, 238, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            background-color: rgba(94, 59, 238, 0.2);
+            transform: scale(1.1);
+        }
+
+        .feature-title {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background-color: var(--background);
+            text-align: center;
+        }
+
+        .dark-theme .cta-section {
+            background-color: var(--white);
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .cta-subtitle {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        /* Footer - Consistent with Previous Pages */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Chat Button - Consistent */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-button i {
+            font-size: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .features-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+/*
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .features-hero {
+                padding: 80px 0 60px;
+            }
+            
+            .features-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+        } */
+          @media (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        flex-direction: column;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+
+        /* animation setup */
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-links.show {
+        max-height: 150px; /* ≈ 3 lines */
+        opacity: 1;
+        overflow-y: auto;  /* scroll for more */
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+    .features-hero {
+                padding: 80px 0 60px;
+            }
+            
+            .features-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+
+}
+
+         /*Bot CSS Code */
+        /* GrowZone AI Chat Styles */
+#growzone-chat-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
+  z-index: 9999;
+  transition: var(--transition);
+}
+
+#growzone-chat-icon:hover {
+  transform: scale(1.1);
+}
+
+#growzone-chat-widget {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 300px;
+  max-height: 400px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+}
+
+#growzone-chat-header {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#growzone-chat-body {
+  padding: 10px;
+  height: 250px;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+#growzone-chat-input {
+  display: flex;
+  border-top: 1px solid var(--border);
+}
+
+#growzone-chat-input input {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+}
+
+#growzone-chat-input button {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">GrowZone</a>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="feature.html" class="active">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="growai.html">GrowZone Ai</a>
+                <a href="contact.html">Contact</a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="profile-toggle" id="profileToggle">
+                <i class="fas fa-user"></i>
+            </button>
+            <!-- Profile Dropdown -->
+<div class="profile-dropdown" id="profileDropdown">
+  <!-- content will be injected by JS -->
+</div>
+        </div>
+    </header>
+
+    <!-- Features Hero Section -->
+    <section class="features-hero">
+        <div class="container">
+            <h1>Powerful AI Features for Startup Success</h1>
+            <p>Discover how GrowZone AI's intelligent tools can transform your business ideas into reality with cutting-edge features designed specifically for entrepreneurs.</p>
+            <a href="#features" class="btn btn-primary">Explore Features</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Core AI-Powered Features</h2>
+                <p class="section-subtitle">Each feature is built with advanced AI to provide personalized, actionable insights that drive real business growth.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="feature-title">Idea Generation</h3>
+                    <p class="feature-description">Spark innovation with AI-driven brainstorming sessions. Generate creative business ideas tailored to your industry, market trends, and personal goals. Validate concepts instantly and explore untapped opportunities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3 class="feature-title">Marketing Strategy</h3>
+                    <p class="feature-description">Craft data-backed marketing plans that resonate with your target audience. AI analyzes competitor strategies, customer behavior, and digital trends to create customized campaigns that maximize ROI.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-signs"></i>
+                    </div>
+                    <h3 class="feature-title">Business Planning & Roadmap</h3>
+                    <p class="feature-description">Build comprehensive business plans and visual roadmaps with AI assistance. Generate financial projections, milestone timelines, and strategic outlines to guide your startup from launch to scale.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Peer-to-Peer Sessions</h3>
+                    <p class="feature-description">Connect with fellow entrepreneurs through AI-moderated sessions. Share experiences, get real-time feedback, and collaborate on challenges with a global community of innovators.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Unlock Your Startup's Potential?</h2>
+                <p class="cta-subtitle">Join thousands of entrepreneurs using GrowZone AI to accelerate their growth. Start your free trial today and experience the future of business assistance.</p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="login.html" class="btn btn-primary">Start Free Trial</a>
+                    <a href="pricing.html" class="btn btn-secondary">View Pricing</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>GrowZone</h3>
+                    <p>AI-powered business growth assistant for startups and entrepreneurs.</p>
+                    <div class="social-links">
+                        <a href="twitter.com"><i class="fab fa-twitter"></i></a>
+                        <a href="linkedin.com"><i class="fab fa-linkedin"></i></a>
+                        <a href="instagram.com"><i class="fab fa-instagram"></i></a>
+                        <a href="facebook.com"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="semiquantum.live">Careers</a></li>
+                        <li><a href="semiquantum.live">Blog</a></li>
+                        <li><a href="semiquantum.live">Press</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="semiquantum.live">Partners</a></li>
+                        <li><a href="semiquantum.live">Community</a></li>
+                        <li><a href="semiquantum.live">Events</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="semiquantum.live">Cookie Policy</a></li>
+                        <li><a href="semiquantum.live">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GrowZone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- GrowZone AI Chat Widget -->
+<div id="growzone-chat-icon">
+    <i class="fas fa-comment"></i>
+</div>
+
+<div id="growzone-chat-widget">
+  <div id="growzone-chat-header">
+    GrowZone AI
+    <span id="growzone-chat-close">✖</span>
+  </div>
+  <div id="growzone-chat-body"></div>
+  <div id="growzone-chat-input">
+    <input type="text" id="growzone-msg" placeholder="Ask GrowZone AI..." />
+    <button id="growzone-send">Send</button>
+  </div>
+</div>
+<script type="module" src="auth-ui.js"></script>
+<!--Bot JS Code-->
+<script>
+    // GrowZone AI Chat JS
+const chatIcon = document.getElementById("growzone-chat-icon");
+const chatWidget = document.getElementById("growzone-chat-widget");
+const chatClose = document.getElementById("growzone-chat-close");
+const chatBody = document.getElementById("growzone-chat-body");
+const chatInput = document.getElementById("growzone-msg");
+const chatSend = document.getElementById("growzone-send");
+
+// Open / Close widget
+chatIcon.addEventListener("click", () => {
+  chatWidget.style.display = "flex";
+});
+chatClose.addEventListener("click", () => {
+  chatWidget.style.display = "none";
+});
+
+// Append messages to chat
+function appendMessage(sender, text) {
+  const msg = document.createElement("div");
+  msg.textContent = text;
+  msg.style.margin = "5px 0";
+  msg.style.fontWeight = sender === "user" ? "bold" : "normal";
+  chatBody.appendChild(msg);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Send message function
+// Send message function
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  // Check for greetings
+  const greetings = ["hi", "hii", "hiii", "hiiii", "hlo", "helo", "hello", "hey", "heyy", "heyyy",
+    "good morning", "good afternoon", "good evening", "gm", "ga", "ge",
+    "hola", "howdy", "hiya", "yo", "sup", "wassup", "hi there", "hello there",
+    "hey there", "hiyaa", "heya", "helloo", "hii there", "hiii there",
+    "hi growzone", "hello growzone", "hii growzone", "hey growzone", "good day",
+    "morning", "afternoon", "evening", "hi friend", "hello friend",
+    "hi buddy", "hello buddy", "hey buddy", "hiya buddy", "hi all", "hello all",
+    "hii all", "hey all", "hey guys", "hi guys", "hello guys"];
+  if (greetings.includes(text.toLowerCase())) {
+    appendMessage("user", text);
+    appendMessage("bot", "Hello! Welcome to GrowZone AI 👋");
+    chatInput.value = "";
+    return; // skip backend call
+  }
+  appendMessage("user", text);
+  chatInput.value = "";
+
+  appendMessage("bot", "Thinking...");
+
+  try {
+    const response = await fetch("/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: text })
+    });
+
+    if (response.body) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let botText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        botText += decoder.decode(value, { stream: true });
+        chatBody.lastChild.textContent = botText;
+      }
+    } else {
+      const data = await response.json();
+      chatBody.lastChild.textContent = data.answer || "No response";
+    }
+  } catch (err) {
+    //chatBody.lastChild.textContent = "[Error]: " + err.message;
+     chatBody.lastChild.textContent = "Sorry, I can't answer right now. Try after some time. – GrowZone AI";
+  }
+}
+
+chatSend.addEventListener("click", sendMessage);
+chatInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+</script>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            // Save theme preference to localStorage
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDark);
+        });
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('darkTheme');
+        if (savedTheme === 'true') {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Mobile Menu Functionality (would be expanded in a real implementation)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
