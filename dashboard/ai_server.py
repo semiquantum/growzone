@@ -7,7 +7,18 @@ from huggingface_hub import InferenceClient
 app = Flask(__name__)
 
 HF_API_KEY = os.getenv("HF_API_KEY", "")
-HF_MODEL = os.getenv("HF_MODEL", "Qwen/Qwen2.5-1.5B-Instruct")
+def normalize_model(model: str) -> str:
+    return model
+
+
+HF_MODEL = normalize_model(os.getenv("HF_MODEL", "Qwen/Qwen2.5-1.5B-Instruct"))
+SYSTEM_PROMPT = (
+    "You are GrowZone AI, a practical business growth strategist for founders and small teams. "
+    "Give detailed, structured answers with clear steps, examples, and tradeoffs. "
+    "When useful, organize the response into short sections such as Summary, Recommendations, Next Steps, Risks, and Metrics. "
+    "Be direct, specific, and actionable. Avoid vague advice. "
+    "If the user request is unclear, ask one focused clarifying question instead of guessing."
+)
 
 
 def ask_hugging_face(prompt: str) -> str:
@@ -17,9 +28,13 @@ def ask_hugging_face(prompt: str) -> str:
     client = InferenceClient(api_key=HF_API_KEY)
     result = client.chat.completions.create(
         model=HF_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=220,
-        temperature=0.6,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        max_tokens=500,
+        temperature=0.5,
+        top_p=0.9,
     )
 
     if result.choices and result.choices[0].message:

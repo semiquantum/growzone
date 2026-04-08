@@ -528,18 +528,18 @@
                         <h2><i class="fas fa-robot"></i> GrowZone AI Assistant</h2>
                         <span class="status-badge">Live Assistant</span>
                     </div>
-                    <p>Ask me anything about business growth, strategy, or planning</p>
+                    <p>Ask for detailed growth plans, strategy breakdowns, marketing audits, and next-step recommendations.</p>
                     <div class="prompt-pills">
-                        <button class="prompt-pill" type="button" data-prompt="Create a 30 day growth plan for a new startup">30 Day Plan</button>
-                        <button class="prompt-pill" type="button" data-prompt="How should I validate my SaaS idea quickly?">Validate Idea</button>
-                        <button class="prompt-pill" type="button" data-prompt="Suggest 5 low budget marketing ideas for my app">Marketing Ideas</button>
+                        <button class="prompt-pill" type="button" data-prompt="Create a detailed 30 day growth plan for a new startup with weekly milestones, metrics, and risks">30 Day Plan</button>
+                        <button class="prompt-pill" type="button" data-prompt="How should I validate my SaaS idea quickly? Give a detailed validation framework, sample tests, and success metrics">Validate Idea</button>
+                        <button class="prompt-pill" type="button" data-prompt="Suggest 5 low budget marketing ideas for my app with execution steps and expected impact">Marketing Ideas</button>
                     </div>
                 </div>
                 
                 <div class="chat-messages" id="chatMessages">
                     <div class="message bot">
                         <div class="message-content">
-                            <div class="message-text">Hello! I'm GrowZone AI, your business growth assistant. How can I help you today?</div>
+                            <div class="message-text">Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.</div>
                             <div class="message-time">Just now</div>
                         </div>
                     </div>
@@ -674,7 +674,18 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    let errorText = `HTTP error! status: ${response.status}`;
+
+                    try {
+                        const errorData = await response.json();
+                        if (errorData?.answer) {
+                            errorText = errorData.answer;
+                        }
+                    } catch {
+                        // Keep the HTTP status fallback.
+                    }
+
+                    throw new Error(errorText);
                 }
 
                 const data = await response.json();
@@ -790,14 +801,14 @@
                 chatMessages.innerHTML = `
                     <div class="message bot">
                         <div class="message-content">
-                            <div class="message-text">Hello! I'm GrowZone AI, your business growth assistant. How can I help you today?</div>
+                            <div class="message-text">Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.</div>
                             <div class="message-time">Just now</div>
                         </div>
                     </div>
                 `;
                 chatHistory = [{
                     role: 'bot',
-                    text: "Hello! I'm GrowZone AI, your business growth assistant. How can I help you today?",
+                    text: "Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.",
                     time: new Date().toLocaleTimeString()
                 }];
                 saveChatHistory();
@@ -843,7 +854,7 @@
                     // Start with welcome message if loading fails
                     chatHistory = [{
                         role: 'bot',
-                        text: "Hello! I'm GrowZone AI, your business growth assistant. How can I help you today?",
+                        text: "Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.",
                         time: new Date().toLocaleTimeString()
                     }];
                 }

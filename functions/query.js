@@ -5,6 +5,14 @@ export async function onRequestOptions() {
   });
 }
 
+const SYSTEM_PROMPT = [
+  "You are GrowZone AI, a practical business growth strategist for founders and small teams.",
+  "Give detailed, structured answers with clear steps, examples, and tradeoffs.",
+  "When useful, organize the response into short sections such as Summary, Recommendations, Next Steps, Risks, and Metrics.",
+  "Be direct, specific, and actionable. Avoid vague advice.",
+  "If the user request is unclear, ask one focused clarifying question instead of guessing.",
+].join(" ");
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -17,7 +25,7 @@ export async function onRequestPost(context) {
     }
 
     const hfApiKey = env.HF_API_KEY;
-    const hfModel = env.HF_MODEL || "Qwen/Qwen2.5-1.5B-Instruct";
+    const hfModel = normalizeModel(env.HF_MODEL || "Qwen/Qwen2.5-1.5B-Instruct");
 
     if (!hfApiKey) {
       return json({ answer: "Missing HF_API_KEY in Cloudflare environment variables." }, 500);
@@ -31,9 +39,13 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         model: hfModel,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.6,
-        max_tokens: 220,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.5,
+        top_p: 0.9,
+        max_tokens: 500,
       }),
     });
 
@@ -56,6 +68,10 @@ export async function onRequestPost(context) {
   } catch (error) {
     return json({ answer: `Request failed: ${error.message}` }, 500);
   }
+}
+
+function normalizeModel(model) {
+  return model.includes(":") ? model : `${model}:fastest`;
 }
 
 function json(payload, status) {
