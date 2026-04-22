@@ -1,5 +1,4 @@
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { auth } from "./firebase-config.js";
+import { supabase, getUserDisplayName } from "./supabase-config.js";
 
 const profileToggle = document.getElementById("profileToggle");
 const profileDropdown = document.getElementById("profileDropdown");
@@ -11,7 +10,7 @@ function renderDropdown(user) {
   }
 
   if (user) {
-    const displayName = user.displayName || "GrowZone User";
+    const displayName = getUserDisplayName(user);
     const email = user.email || "No email";
 
     profileDropdown.innerHTML = `
@@ -28,7 +27,7 @@ function renderDropdown(user) {
     if (logoutBtn) {
       logoutBtn.addEventListener("click", async () => {
         try {
-          await signOut(auth);
+          await supabase.auth.signOut();
           profileDropdown.classList.remove("show");
         } catch (error) {
           console.error("Logout failed", error);
@@ -44,10 +43,24 @@ function renderDropdown(user) {
   }
 }
 
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-  renderDropdown(user);
+async function hydrateAuthUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    currentUser = null;
+    renderDropdown(null);
+    return;
+  }
+
+  currentUser = data.user;
+  renderDropdown(data.user);
+}
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  currentUser = session?.user || null;
+  renderDropdown(currentUser);
 });
+
+hydrateAuthUser();
 
 if (profileToggle && profileDropdown) {
   profileToggle.addEventListener("click", () => {

@@ -1,883 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrowZone - AI-Powered Business Growth Assistant</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS Variables */
-        :root {
-            --primary: #0f6e9e;
-            --secondary: #153448;
-            --accent: #f77f00;
-            --background: #f8f3e6;
-            --text: #15233a;
-            --text-light: #5d6b78;
-            --border: #d8dfec;
-            --white: #ffffff;
-            --shadow: 0 12px 28px rgba(20, 35, 58, 0.12);
-            --transition: all 0.3s ease;
-        }
-
-        /* Dark theme variables */
-        .dark-theme {
-            --background: #0f1b2d;
-            --text: #ecf3ff;
-            --text-light: #9db0c4;
-            --border: #223a50;
-            --white: #1a2b3d;
-            --shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
-        }
-
-        /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 10% 10%, rgba(247, 127, 0, 0.16), transparent 28%),
-                radial-gradient(circle at 90% 18%, rgba(15, 110, 158, 0.18), transparent 30%),
-                linear-gradient(135deg, #fef9ef, var(--background));
-            transition: var(--transition);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            line-height: 1.3;
-            font-family: 'Sora', sans-serif;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-        }
-
-        h2 {
-            font-size: 2.5rem;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        /* Button Styles */
-        .btn {
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #1f8ac0);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #0f6089, #1a79a9);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(94, 59, 238, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Header and Navigation */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(255, 249, 238, 0.86);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .dark-theme header {
-            background: rgba(17, 30, 47, 0.92);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: 0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            margin-left: auto;   /* push nav towards right */
-            margin-right: 15px; 
-        }
-
-        .nav-links a {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 1.2rem;
-            
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .profile-toggle {
-            background: var(--primary);
-            border: none;
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-}
-        .profile-dropdown {
-  position: absolute;
-  top: 60px; /* below header */
-  right: 20px;
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: none;
-  flex-direction: column;
-  min-width: 180px;
-  z-index: 1000;
-}
-
-.profile-dropdown.show {
-  display: flex;
-}
-
-.profile-dropdown a, 
-.profile-dropdown button {
-  padding: 10px 15px;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--text);
-  transition: var(--transition);
-}
-
-.profile-dropdown a:hover, 
-.profile-dropdown button:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-
-.profile-toggle:hover {
-  background: #4a2fbe;
-  transform: scale(1.05);
-}
-
-        /* Hero Section */
-        .hero {
-            padding: 100px 0;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-
-        .hero-content {
-            flex: 1;
-        }
-
-        .hero-title {
-            margin-bottom: 20px;
-            color: var(--text);
-            text-wrap: balance;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            max-width: 500px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: var(--shadow);
-            animation: floatIn 0.7s ease-out;
-        }
-
-        .hero-content {
-            animation: revealUp 0.7s ease-out;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background-color: var(--white);
-            border-radius: 20px;
-            margin: 40px 0;
-            border: 1px solid var(--border);
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
-        }
-
-        .section-title {
-            margin-bottom: 20px;
-        }
-
-        .section-subtitle {
-            color: var(--text-light);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            padding: 30px;
-            border-radius: 12px;
-            background-color: var(--background);
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(15, 110, 158, 0.12);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        @keyframes revealUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes floatIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .feature-title {
-            margin-bottom: 15px;
-        }
-
-        .feature-description {
-            color: var(--text-light);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary);
-            color: white;
-            padding: 60px 0 30px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            margin-bottom: 20px;
-            color: white;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .footer-column ul li a:hover {
-            color: white;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Chat Button 
-        .chat-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
-            cursor: pointer;
-            z-index: 99;
-            transition: var(--transition);
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-        }
-
-        .chat-button i {
-            font-size: 1.5rem;
-        } */
-
-        /* Responsive Design 
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 2.8rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-            
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding: 70px 0;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-        } */
-
-        @media (max-width: 768px) {
-    .nav-links {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-        flex-direction: column;
-        background: var(--white);
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        overflow: hidden;
-
-        /* animation setup */
-        max-height: 0;
-        opacity: 0;
-        transition: max-height 0.3s ease, opacity 0.3s ease;
-    }
-
-    .nav-links.show {
-        max-height: 150px; /* ≈ 3 lines */
-        opacity: 1;
-        overflow-y: auto;  /* scroll for more */
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
-}
-
-        /*Bot CSS Code */
-        /* GrowZone AI Chat Styles */
-#growzone-chat-icon {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: var(--primary);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(94, 59, 238, 0.3);
-  z-index: 9999;
-  transition: var(--transition);
-}
-
-#growzone-chat-icon:hover {
-  transform: scale(1.1);
-}
-
-#growzone-chat-widget {
-  position: fixed;
-  bottom: 100px;
-  right: 30px;
-  width: 300px;
-  max-height: 400px;
-  background-color: var(--white);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  z-index: 9999;
-}
-
-#growzone-chat-header {
-  background-color: var(--primary);
-  color: white;
-  padding: 10px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#growzone-chat-body {
-  padding: 10px;
-  height: 1000px;
-  overflow-y: auto;
-  background-color: var(--background);
-}
-
-#growzone-chat-input {
-  display: flex;
-  border-top: 1px solid var(--border);
-}
-
-#growzone-chat-input input {
-  flex: 1;
-  border: none;
-  padding: 8px;
-  font-size: 14px;
-}
-
-#growzone-chat-input button {
-  background-color: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowZone | AI Growth Copilot for Modern Startups</title>
+  <meta name="description" content="GrowZone helps founders plan growth, optimize marketing, and run AI-powered strategy workflows from one SaaS platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="saas-platform.css">
 </head>
-<body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container nav-container">
-            <a href="index.html" class="logo">GrowZone</a>
-            
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="feature.html">Features</a>
-                <a href="pricing.html">Pricing</a>
-                <a href="growai.html">GrowZone Ai</a>
-                <a href="contact.html">Contact</a>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-            </nav>
-            
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <button class="profile-toggle" id="profileToggle">
-                <i class="fas fa-user"></i>
-            </button>
-            <!-- Profile Dropdown -->
-<div class="profile-dropdown" id="profileDropdown">
-  <!-- content will be injected by JS -->
-</div>
-        </div>
-    </header>
+<body class="landing-body">
+  <header class="site-header" id="top">
+    <div class="container header-wrap">
+      <a class="brand-link" href="index.html" aria-label="GrowZone home">
+        <span class="brand-orb" aria-hidden="true"></span>
+        <span class="brand-text">GrowZone</span>
+      </a>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Grow Your Startup With AI-Powered Guidance</h1>
-                <p class="hero-subtitle">GrowZone AI helps entrepreneurs validate ideas, create marketing strategies, develop business plans, and accelerate growth with intelligent insights.</p>
-                <div class="hero-buttons">
-                    <a href="feature.html" class="btn btn-primary">Get Started</a>
-                    <a href="about.html" class="btn btn-secondary">Learn More</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://placeholder-image-service.onrender.com/image/600x400?prompt=Modern%20AI%20assistant%20dashboard%20with%20growth%20analytics%20and%20charts&id=8d22f33b-f782-4406-8b35-701a26c0aea0" alt="AI-powered business growth dashboard with analytics and visualizations">
-            </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="site-nav" id="primaryNav" aria-label="Primary">
+        <a href="index.html" data-page="home" class="active">Home</a>
+        <a href="feature.html" data-page="features">Features</a>
+        <a href="pricing.html" data-page="pricing">Pricing</a>
+        <a href="about.html" data-page="about">About</a>
+        <a href="contact.html" data-page="contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="login.html">Log In</a>
+        <a class="btn btn-primary" href="dashboard.html">Open Dashboard</a>
+        <button class="profile-toggle" id="profileToggle" type="button" aria-label="Open account menu">
+          <i class="fas fa-user"></i>
+        </button>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown" role="menu" aria-label="Account menu"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section" aria-labelledby="heroHeading">
+      <div class="container hero-grid">
+        <div class="hero-copy" data-reveal>
+          <span class="eyebrow">AI Revenue Intelligence Platform</span>
+          <h1 id="heroHeading">Build, validate, and scale your startup with one growth operating system.</h1>
+          <p>
+            GrowZone combines AI strategy assistants, subscription analytics, and actionable growth workflows so founders can move from ideas to predictable revenue faster.
+          </p>
+          <div class="hero-cta-row">
+            <a class="btn btn-primary btn-lg" href="login.html">Start Free</a>
+            <a class="btn btn-ghost btn-lg" href="#how-it-works">See How It Works</a>
+          </div>
+          <div class="metric-row" aria-label="Platform highlights">
+            <article class="metric-card">
+              <strong>10k+</strong>
+              <span>Growth prompts executed</span>
+            </article>
+            <article class="metric-card">
+              <strong>94%</strong>
+              <span>Teams report faster planning</span>
+            </article>
+            <article class="metric-card">
+              <strong>24/7</strong>
+              <span>AI strategy availability</span>
+            </article>
+          </div>
         </div>
+
+        <div class="hero-visual" data-reveal>
+          <div class="glass-card dashboard-preview" aria-label="Dashboard preview">
+            <div class="preview-top">
+              <span class="chip chip-ok">Live</span>
+              <span class="chip">Pro Workspace</span>
+            </div>
+            <h2>Growth Control Center</h2>
+            <div class="preview-bars" aria-hidden="true">
+              <div><span>Campaign ROI</span><b style="width:82%"></b></div>
+              <div><span>Retention</span><b style="width:68%"></b></div>
+              <div><span>Lead Velocity</span><b style="width:74%"></b></div>
+            </div>
+            <div class="preview-foot">
+              <p>Recommended today:</p>
+              <ul>
+                <li>Launch onboarding email sequence</li>
+                <li>Run pricing experiment on Pro tier</li>
+                <li>Review churn signals in trial users</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">How GrowZone AI Helps Your Business</h2>
-                <p class="section-subtitle">Our AI-powered platform provides comprehensive support for every stage of your startup journey</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h3 class="feature-title">Idea Validation</h3>
-                    <p class="feature-description">Test your business concepts with AI-powered market analysis to ensure you're building something people actually want.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">Growth Strategy</h3>
-                    <p class="feature-description">Get personalized marketing and growth strategies tailored to your specific business model and target audience.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Business Planning</h3>
-                    <p class="feature-description">Create comprehensive business plans, financial projections, and investor pitch materials with AI assistance.</p>
-                </div>
-            </div>
+    <section class="section section-features" id="features" aria-labelledby="featureHeading">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Features</span>
+          <h2 id="featureHeading">Everything needed to run a high-performing growth team</h2>
+          <p>From strategic planning to day-to-day execution, GrowZone gives you a complete set of operational tools.</p>
+        </header>
+
+        <div class="feature-grid">
+          <article class="feature-card" data-reveal><i class="fa-solid fa-compass"></i><h3>AI Strategy Planning</h3><p>Generate practical growth plans with milestones, risks, and measurable outcomes.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-chart-line"></i><h3>Revenue Forecasting</h3><p>Estimate pipeline growth and plan next moves using trend-aware forecasting assistants.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-layer-group"></i><h3>Experiment Backlog</h3><p>Track campaign experiments, expected impact, and execution status across your team.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-user-check"></i><h3>Customer Journey Maps</h3><p>Map user funnels and identify where conversions drop with guided diagnostics.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-robot"></i><h3>Chat Assistant Workspace</h3><p>Ask complex business questions and receive structured responses with clear next steps.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-gauge-high"></i><h3>Usage and Limits</h3><p>Monitor AI usage, API activity, and plan thresholds through clean visual analytics.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-shield-heart"></i><h3>Secure Auth</h3><p>Supabase-backed authentication with persistent sessions and protected dashboard routes.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-plug"></i><h3>Integrations Ready</h3><p>Connect external tools and view status centrally with expansion-ready integration cards.</p></article>
+          <article class="feature-card" data-reveal><i class="fa-solid fa-bolt"></i><h3>Fast Workflow UI</h3><p>Designed for speed with keyboard-friendly interactions and mobile-optimized controls.</p></article>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>GrowZone</h3>
-                    <p>AI-powered business growth assistant for startups and entrepreneurs.</p>
-                    <div class="social-links">
-                       <!-- <a href="#"><i class="fab fa-twitter"></i></a> -->
-                        <a href="www.linkedin.com"><i class="fab fa-linkedin"></i></a>
-                        <a href="www.instagram.com"><i class="fab fa-instagram"></i></a>
-                        <a href="www.facebook.com"><i class="fab fa-facebook"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="semiquantum.live">Careers</a></li>
-                        <li><a href="semiquantum.live">Blog</a></li>
-                        <li><a href="semiquantum.live">Press</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="contact.html">Help Center</a></li>
-                        <li><a href="semiquantum.live">Partners</a></li>
-                        <li><a href="semiquantum.live">Community</a></li>
-                        <li><a href="semiquantum.live">Events</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
-                        <li><a href="semiquantum.live">Cookie Policy</a></li>
-                        <li><a href="semiquantum.live">Disclaimer</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 GrowZone. All rights reserved.</p>
-            </div>
+    <section class="section section-how" id="how-it-works" aria-labelledby="howHeading">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">How It Works</span>
+          <h2 id="howHeading">From signup to measurable outcomes in four steps</h2>
+        </header>
+
+        <div class="steps-grid">
+          <article class="step-card" data-reveal>
+            <span class="step-index">01</span>
+            <h3>Create your workspace</h3>
+            <p>Sign up, set your business context, and choose your growth objective.</p>
+          </article>
+          <article class="step-card" data-reveal>
+            <span class="step-index">02</span>
+            <h3>Generate strategy</h3>
+            <p>Use GrowZone AI to produce a focused plan with weekly action blocks.</p>
+          </article>
+          <article class="step-card" data-reveal>
+            <span class="step-index">03</span>
+            <h3>Execute campaigns</h3>
+            <p>Launch tasks from your dashboard and monitor usage plus performance health.</p>
+          </article>
+          <article class="step-card" data-reveal>
+            <span class="step-index">04</span>
+            <h3>Optimize continuously</h3>
+            <p>Review activity logs, update subscriptions, and iterate based on real signals.</p>
+          </article>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <!-- Chat Button 
-    <div class="chat-button">
-        <i class="fas fa-comment"></i>
-    </div> -->
-    <!-- GrowZone AI Chat Widget -->
-<div id="growzone-chat-icon">
-    <i class="fas fa-comment"></i>
-</div>
+    <section class="section section-testimonials" aria-labelledby="testimonialHeading">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Testimonials</span>
+          <h2 id="testimonialHeading">Trusted by founders shipping fast</h2>
+        </header>
 
-<div id="growzone-chat-widget">
-  <div id="growzone-chat-header">
-    GrowZone AI
-    <span id="growzone-chat-close">✖</span>
-  </div>
-  <div id="growzone-chat-body"></div>
-  <div id="growzone-chat-input">
-    <input type="text" id="growzone-msg" placeholder="Ask GrowZone AI..." />
-    <button id="growzone-send">Send</button>
-  </div>
-</div>
+        <div class="testimonial-grid">
+          <article class="testimonial-card" data-reveal>
+            <p>“GrowZone turned our vague growth ideas into a weekly operating rhythm. We closed our first 100 paid users two months faster.”</p>
+            <div class="author"><strong>Aarav Menon</strong><span>Co-founder, FlowTrace</span></div>
+          </article>
+          <article class="testimonial-card" data-reveal>
+            <p>“The dashboard is actually usable. Subscription visibility, usage, and AI prompts are all in one place and easy to act on.”</p>
+            <div class="author"><strong>Riya Shah</strong><span>Growth Lead, BuildNest</span></div>
+          </article>
+          <article class="testimonial-card" data-reveal>
+            <p>“We replaced scattered docs and chat tools with GrowZone. Strategy reviews now happen in minutes, not half-day meetings.”</p>
+            <div class="author"><strong>Karan Kapoor</strong><span>Founder, MarketPilot</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-<script type="module" src="auth-ui.js"></script>
-<!--Bot JS Code-->
-<script>
-    // GrowZone AI Chat JS
-const chatIcon = document.getElementById("growzone-chat-icon");
-const chatWidget = document.getElementById("growzone-chat-widget");
-const chatClose = document.getElementById("growzone-chat-close");
-const chatBody = document.getElementById("growzone-chat-body");
-const chatInput = document.getElementById("growzone-msg");
-const chatSend = document.getElementById("growzone-send");
+    <section class="section section-pricing" aria-labelledby="pricingHeading">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Pricing</span>
+          <h2 id="pricingHeading">Simple plans for every growth stage</h2>
+        </header>
 
-// Open / Close widget
-chatIcon.addEventListener("click", () => {
-  chatWidget.style.display = "flex";
-});
-chatClose.addEventListener("click", () => {
-  chatWidget.style.display = "none";
-});
+        <div class="pricing-grid">
+          <article class="price-card" data-reveal>
+            <h3>Free</h3>
+            <p class="price">$0<span>/month</span></p>
+            <ul>
+              <li>Basic AI chat workspace</li>
+              <li>Up to 30 AI chats monthly</li>
+              <li>Core dashboard metrics</li>
+            </ul>
+            <a class="btn btn-ghost" href="login.html">Get Started</a>
+          </article>
 
-// Append messages to chat
-function appendMessage(sender, text) {
-  const msg = document.createElement("div");
-  msg.textContent = text;
-  msg.style.margin = "5px 0";
-  msg.style.fontWeight = sender === "user" ? "bold" : "normal";
-  chatBody.appendChild(msg);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
+          <article class="price-card featured" data-reveal>
+            <span class="chip chip-accent">Most Popular</span>
+            <h3>Pro</h3>
+            <p class="price">$29<span>/month</span></p>
+            <ul>
+              <li>Advanced growth playbooks</li>
+              <li>Up to 500 AI chats monthly</li>
+              <li>Priority support and analytics</li>
+            </ul>
+            <a class="btn btn-primary" href="dashboard.html">Upgrade to Pro</a>
+          </article>
 
-// Send message function
-async function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  // Check for greetings
-  const greetings = ["hi", "hii", "hiii", "hiiii", "hlo", "helo", "hello", "hey", "heyy", "heyyy",
-    "good morning", "good afternoon", "good evening", "gm", "ga", "ge",
-    "hola", "howdy", "hiya", "yo", "sup", "wassup", "hi there", "hello there",
-    "hey there", "hiyaa", "heya", "helloo", "hii there", "hiii there",
-    "hi growzone", "hello growzone", "hii growzone", "hey growzone", "good day",
-    "morning", "afternoon", "evening", "hi friend", "hello friend",
-    "hi buddy", "hello buddy", "hey buddy", "hiya buddy", "hi all", "hello all",
-    "hii all", "hey all", "hey guys", "hi guys", "hello guys"];
-  if (greetings.includes(text.toLowerCase())) {
-    appendMessage("user", text);
-    appendMessage("bot", "Hello! Welcome to GrowZone AI 👋");
-    chatInput.value = "";
-    return; // skip backend call
-  }
-  appendMessage("user", text);
-  chatInput.value = "";
+          <article class="price-card" data-reveal>
+            <h3>Premium</h3>
+            <p class="price">$99<span>/month</span></p>
+            <ul>
+              <li>Unlimited strategy workspaces</li>
+              <li>10k API calls and team controls</li>
+              <li>Custom integration onboarding</li>
+            </ul>
+            <a class="btn btn-ghost" href="contact.html">Talk to Sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  appendMessage("bot", "Thinking...");
+    <section class="section section-faq" aria-labelledby="faqHeading">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">FAQ</span>
+          <h2 id="faqHeading">Common questions before you scale</h2>
+        </header>
 
-  try {
-    const response = await fetch("/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: text })
-    });
+        <div class="faq-list" id="faqList">
+          <article class="faq-item" data-reveal>
+            <button class="faq-question" aria-expanded="false" aria-controls="faq1" id="faqBtn1">How fast can we onboard our team?</button>
+            <div class="faq-answer" id="faq1" role="region" aria-labelledby="faqBtn1" hidden>
+              <p>Most teams finish setup in under 10 minutes. You can start with one workspace and add teammates as your plan grows.</p>
+            </div>
+          </article>
+          <article class="faq-item" data-reveal>
+            <button class="faq-question" aria-expanded="false" aria-controls="faq2" id="faqBtn2">Can I switch plans later?</button>
+            <div class="faq-answer" id="faq2" role="region" aria-labelledby="faqBtn2" hidden>
+              <p>Yes, upgrade or downgrade from the dashboard subscription panel. Plan changes apply instantly with clear billing dates.</p>
+            </div>
+          </article>
+          <article class="faq-item" data-reveal>
+            <button class="faq-question" aria-expanded="false" aria-controls="faq3" id="faqBtn3">Do you support secure authentication?</button>
+            <div class="faq-answer" id="faq3" role="region" aria-labelledby="faqBtn3" hidden>
+              <p>GrowZone uses Supabase auth with persistent sessions and route protection for dashboard and AI tools.</p>
+            </div>
+          </article>
+          <article class="faq-item" data-reveal>
+            <button class="faq-question" aria-expanded="false" aria-controls="faq4" id="faqBtn4">Is my data exportable?</button>
+            <div class="faq-answer" id="faq4" role="region" aria-labelledby="faqBtn4" hidden>
+              <p>Yes. Chat histories and strategy artifacts can be exported from your workspace for reporting or backup.</p>
+            </div>
+          </article>
+          <article class="faq-item" data-reveal>
+            <button class="faq-question" aria-expanded="false" aria-controls="faq5" id="faqBtn5">Will more integrations be added?</button>
+            <div class="faq-answer" id="faq5" role="region" aria-labelledby="faqBtn5" hidden>
+              <p>Absolutely. The integrations panel is designed for rapid additions, including CRM, billing, and analytics providers.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    if (response.body) {
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let botText = "";
+  <footer class="site-footer" aria-labelledby="footerHeading">
+    <div class="container footer-grid">
+      <div>
+        <h2 id="footerHeading">GrowZone</h2>
+        <p>Modern AI growth operating system for ambitious founders and startup teams.</p>
+        <div class="social-row" aria-label="Social links">
+          <a href="https://www.linkedin.com" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.instagram.com" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        botText += decoder.decode(value, { stream: true });
-        chatBody.lastChild.textContent = botText;
-      }
-    } else {
-      const data = await response.json();
-      chatBody.lastChild.textContent = data.answer || "No response";
-    }
-  } catch (err) {
-    //chatBody.lastChild.textContent = "[Error]: " + err.message;
-     chatBody.lastChild.textContent = "Sorry, I can't answer right now. Try after some time. – GrowZone AI";
-  }
-}
+      <div>
+        <h3>Platform</h3>
+        <ul>
+          <li><a href="feature.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="growai.html">AI Chat</a></li>
+        </ul>
+      </div>
 
-chatSend.addEventListener("click", sendMessage);
-chatInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendMessage();
-});
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
 
-</script>
+      <div>
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#faqHeading">FAQ</a></li>
+          <li><a href="contact.html">Support</a></li>
+          <li><a href="pricing.html">Plans</a></li>
+          <li><a href="#top">Back to top</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; <span id="yearNow"></span> GrowZone. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <script>
-        // Theme Toggle Functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            
-            if (document.body.classList.contains('dark-theme')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-            
-            // Save theme preference to localStorage
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('darkTheme', isDark);
-        });
-        
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('darkTheme');
-        if (savedTheme === 'true') {
-            document.body.classList.add('dark-theme');
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-        
-        // Mobile Menu Functionality (would be expanded in a real implementation)
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('show');
-        });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
+  <script type="module" src="landing.js"></script>
+  <script type="module" src="auth-ui.js"></script>
 </body>
 </html>

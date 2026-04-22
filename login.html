@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-theme.css">
   <style>
     :root {
       --ink: #0d1b2a;
@@ -230,13 +231,7 @@
   </div>
 
   <script type="module">
-    import {
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signInWithPopup,
-      updateProfile
-    } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { auth, googleProvider } from "./firebase-config.js";
+    import { supabase } from "./supabase-config.js";
 
     const signinTab = document.getElementById("signinTab");
     const signupTab = document.getElementById("signupTab");
@@ -268,12 +263,30 @@
       setTab(false);
     }
 
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        window.location.href = "dashboard.html";
+      }
+    });
+
+    async function checkExistingSession() {
+      const { data } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        window.location.href = "dashboard.html";
+      }
+    }
+
+    checkExistingSession();
+
     document.getElementById("signinBtn").addEventListener("click", async () => {
       const email = document.getElementById("signinEmail").value.trim();
       const password = document.getElementById("signinPassword").value;
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          throw error;
+        }
         showStatus("Signed in successfully. Redirecting to dashboard...");
         setTimeout(() => {
           window.location.href = "dashboard.html";
@@ -289,10 +302,24 @@
       const password = document.getElementById("signupPassword").value;
 
       try {
-        const credential = await createUserWithEmailAndPassword(auth, email, password);
-        if (name) {
-          await updateProfile(credential.user, { displayName: name });
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { display_name: name },
+            emailRedirectTo: `${window.location.origin}/dashboard.html`
+          }
+        });
+
+        if (error) {
+          throw error;
         }
+
+        if (!data.session) {
+          showStatus("Account created. Please confirm your email before signing in.");
+          return;
+        }
+
         showStatus("Account created successfully. Redirecting to dashboard...");
         setTimeout(() => {
           window.location.href = "dashboard.html";
@@ -304,11 +331,16 @@
 
     document.getElementById("googleBtn").addEventListener("click", async () => {
       try {
-        await signInWithPopup(auth, googleProvider);
-        showStatus("Google login successful. Redirecting to dashboard...");
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 500);
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: `${window.location.origin}/dashboard.html`
+          }
+        });
+
+        if (error) {
+          throw error;
+        }
       } catch (error) {
         showStatus(error.message, true);
       }

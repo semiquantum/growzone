@@ -1,3 +1,6 @@
 .env
 __pycache__/
 *.pyc
+.venv/
+Google meet/.venv/
+Google meet/**/credentials.json

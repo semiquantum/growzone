@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="site-theme.css">
     <style>
         /* CSS Variables */
         :root {
@@ -580,14 +581,7 @@
     </main>
 
     <script type="module">
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-        import { auth } from "./firebase-config.js";
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html";
-            }
-        });
+        import { supabase } from "./supabase-config.js";
 
         // DOM Elements
         const chatMessages = document.getElementById('chatMessages');
@@ -603,13 +597,86 @@
 
         // Backend URL
         const BACKEND_URL = "/query";
+        const CHAT_TABLE = "chat_history";
+        const LOCAL_CHAT_KEY_PREFIX = "growzoneChatHistory";
+        const DEFAULT_WELCOME_MESSAGE = "Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.";
+        const API_USAGE_KEY_PREFIX = "growzoneApiUsage";
 
         // Chat history
         let chatHistory = [];
+        let activeUserId = null;
+        let hasSupabaseStorageWarning = false;
+
+        function getLocalChatKey() {
+            return activeUserId ? `${LOCAL_CHAT_KEY_PREFIX}:${activeUserId}` : LOCAL_CHAT_KEY_PREFIX;
+        }
+
+        function getCurrentMonthKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            return `${y}-${m}`;
+        }
+
+        function incrementApiUsage() {
+            const usageKey = `${API_USAGE_KEY_PREFIX}:${getCurrentMonthKey()}`;
+            const current = Number(localStorage.getItem(usageKey) || '0');
+            localStorage.setItem(usageKey, String(current + 1));
+        }
+
+        function renderMessage(role, text, time = "Just now") {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${role}`;
+
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            messageText.textContent = text;
+
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = time;
+
+            messageContent.appendChild(messageText);
+            messageContent.appendChild(messageTime);
+            messageElement.appendChild(messageContent);
+            chatMessages.appendChild(messageElement);
+        }
+
+        function showWelcomeMessage() {
+            chatMessages.innerHTML = '';
+            renderMessage('bot', DEFAULT_WELCOME_MESSAGE, 'Just now');
+            chatHistory = [{
+                role: 'bot',
+                text: DEFAULT_WELCOME_MESSAGE,
+                time: new Date().toLocaleTimeString()
+            }];
+        }
+
+        async function ensureAuthenticatedUser() {
+            const { data, error } = await supabase.auth.getUser();
+            if (error || !data.user) {
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            activeUserId = data.user.id;
+            return data.user;
+        }
+
+        supabase.auth.onAuthStateChange((_event, session) => {
+            const sessionUser = session?.user || null;
+            activeUserId = sessionUser?.id || null;
+            if (!sessionUser) {
+                window.location.href = 'login.html';
+            }
+        });
 
         // Initialize
-        function init() {
-            loadChatHistory();
+        async function init() {
+            await loadChatHistory();
             setupEventListeners();
             autoResizeTextarea();
         }
@@ -690,6 +757,7 @@
 
                 const data = await response.json();
                 const responseText = (data.answer || "No response from GrowZone AI").toString();
+                incrementApiUsage();
 
                 // Hide typing indicator
                 typingIndicator.classList.remove('active');
@@ -760,30 +828,14 @@
 
         // Add message to chat
         function addMessage(role, text) {
-            const messageElement = document.createElement('div');
-            messageElement.className = `message ${role}`;
-            
-            const messageContent = document.createElement('div');
-            messageContent.className = 'message-content';
-            
-            const messageText = document.createElement('div');
-            messageText.className = 'message-text';
-            messageText.textContent = text;
-            
-            const messageTime = document.createElement('div');
-            messageTime.className = 'message-time';
-            messageTime.textContent = new Date().toLocaleTimeString();
-            
-            messageContent.appendChild(messageText);
-            messageContent.appendChild(messageTime);
-            messageElement.appendChild(messageContent);
-            chatMessages.appendChild(messageElement);
+            const timestamp = new Date().toLocaleTimeString();
+            renderMessage(role, text, timestamp);
             
             // Add to chat history
             chatHistory.push({
                 role: role,
                 text: text,
-                time: new Date().toLocaleTimeString()
+                time: timestamp
             });
             
             // Scroll to bottom
@@ -798,19 +850,7 @@
         // Clear chat
         function clearChat() {
             if (confirm('Are you sure you want to clear the chat?')) {
-                chatMessages.innerHTML = `
-                    <div class="message bot">
-                        <div class="message-content">
-                            <div class="message-text">Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.</div>
-                            <div class="message-time">Just now</div>
-                        </div>
-                    </div>
-                `;
-                chatHistory = [{
-                    role: 'bot',
-                    text: "Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.",
-                    time: new Date().toLocaleTimeString()
-                }];
+                showWelcomeMessage();
                 saveChatHistory();
             }
         }
@@ -830,35 +870,68 @@
             URL.revokeObjectURL(url);
         }
 
-        // Save chat history to localStorage
-        function saveChatHistory() {
-            localStorage.setItem('growzoneChatHistory', JSON.stringify(chatHistory));
+        // Save chat history to Supabase (fallback to localStorage if table/policies are not ready).
+        async function saveChatHistory() {
+            if (!activeUserId) {
+                localStorage.setItem(getLocalChatKey(), JSON.stringify(chatHistory));
+                return;
+            }
+
+            const { error } = await supabase
+                .from(CHAT_TABLE)
+                .upsert(
+                    {
+                        user_id: activeUserId,
+                        history: chatHistory,
+                        updated_at: new Date().toISOString()
+                    },
+                    { onConflict: 'user_id' }
+                );
+
+            if (error) {
+                if (!hasSupabaseStorageWarning) {
+                    console.warn('Supabase chat storage unavailable, using localStorage fallback.', error.message);
+                    hasSupabaseStorageWarning = true;
+                }
+                localStorage.setItem(getLocalChatKey(), JSON.stringify(chatHistory));
+            }
         }
 
-        // Load chat history from localStorage
-        function loadChatHistory() {
-            const savedHistory = localStorage.getItem('growzoneChatHistory');
-            if (savedHistory) {
-                try {
-                    chatHistory = JSON.parse(savedHistory);
-                    
-                    // Clear current messages
-                    chatMessages.innerHTML = '';
-                    
-                    // Add messages from history
-                    chatHistory.forEach(msg => {
-                        addMessage(msg.role, msg.text);
-                    });
-                } catch (e) {
-                    console.error('Error loading chat history:', e);
-                    // Start with welcome message if loading fails
-                    chatHistory = [{
-                        role: 'bot',
-                        text: "Hello! I'm GrowZone AI, your business growth assistant. I can give you detailed strategies, step-by-step plans, and practical next actions.",
-                        time: new Date().toLocaleTimeString()
-                    }];
+        // Load chat history from Supabase (fallback to localStorage).
+        async function loadChatHistory() {
+            chatMessages.innerHTML = '';
+
+            if (activeUserId) {
+                const { data, error } = await supabase
+                    .from(CHAT_TABLE)
+                    .select('history')
+                    .eq('user_id', activeUserId)
+                    .maybeSingle();
+
+                if (!error && Array.isArray(data?.history) && data.history.length > 0) {
+                    chatHistory = data.history;
+                } else {
+                    const savedHistory = localStorage.getItem(getLocalChatKey());
+                    if (savedHistory) {
+                        try {
+                            chatHistory = JSON.parse(savedHistory);
+                        } catch (e) {
+                            console.error('Error loading fallback chat history:', e);
+                            chatHistory = [];
+                        }
+                    }
                 }
             }
+
+            if (!Array.isArray(chatHistory) || chatHistory.length === 0) {
+                showWelcomeMessage();
+                return;
+            }
+
+            chatHistory.forEach(msg => {
+                renderMessage(msg.role, msg.text, msg.time || 'Just now');
+            });
+            scrollToBottom();
         }
 
         // Toggle theme
@@ -895,8 +968,15 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
-            init();
-            checkSavedTheme();
+            (async () => {
+                const user = await ensureAuthenticatedUser();
+                if (!user) {
+                    return;
+                }
+
+                await init();
+                checkSavedTheme();
+            })();
         });
     </script>
 </body>

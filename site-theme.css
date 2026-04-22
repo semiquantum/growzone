@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #0f6e9e;
+  --secondary: #153448;
+  --accent: #f77f00;
+  --background: #f8f3e6;
+  --text: #15233a;
+  --text-light: #5d6b78;
+  --border: #d8dfec;
+  --white: #ffffff;
+  --shadow: 0 12px 28px rgba(20, 35, 58, 0.12);
+  --transition: all 0.3s ease;
+}
+
+.dark-theme {
+  --primary: #4aa3d8;
+  --secondary: #ecf3ff;
+  --accent: #ffb65a;
+  --background: #0f1b2d;
+  --text: #ecf3ff;
+  --text-light: #9db0c4;
+  --border: #223a50;
+  --white: #17283b;
+  --shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 8% 8%, rgba(247, 127, 0, 0.16), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(15, 110, 158, 0.16), transparent 34%),
+    linear-gradient(135deg, #fef9ef, var(--background));
+  transition: var(--transition);
+}
+
+h1, h2, h3, h4, .logo, .brand, .brand-name, .section-title, .hero h1, .about-hero h1, .features-hero h1, .pricing-hero h1, .contact-hero h1 {
+  font-family: 'Sora', sans-serif;
+}
+
+a {
+  transition: var(--transition);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 20px;
+}
+
+header {
+  background: rgba(255, 249, 238, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(20, 35, 58, 0.05);
+}
+
+.dark-theme header {
+  background: rgba(17, 30, 47, 0.92);
+}
+
+.logo,
+.brand,
+.brand a {
+  color: var(--primary) !important;
+  letter-spacing: 0.02em;
+}
+
+.nav-links a,
+.theme-toggle,
+.mobile-menu-btn {
+  color: var(--text) !important;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--primary) !important;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.action-button,
+.send-button,
+.tab-btn,
+.profile-toggle {
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.btn-primary,
+.send-button,
+.profile-toggle,
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), #1f8ac0) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.btn-primary:hover,
+.send-button:hover,
+.profile-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-secondary,
+.btn-outline,
+.action-button,
+.tab-btn,
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.76) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.btn-secondary:hover,
+.btn-outline:hover,
+.action-button:hover,
+.tab-btn:hover,
+.btn-ghost:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: rgba(15, 110, 158, 0.08) !important;
+}
+
+.hero,
+.about-hero,
+.features-hero,
+.pricing-hero,
+.contact-hero,
+.dashboard-hero,
+.chat-header {
+  background: linear-gradient(135deg, rgba(15, 110, 158, 0.12), rgba(247, 127, 0, 0.14)) !important;
+}
+
+.about-hero,
+.features-hero,
+.pricing-hero,
+.contact-hero {
+  color: var(--white) !important;
+  background: linear-gradient(135deg, var(--primary), #194c72 60%, #f08a24) !important;
+}
+
+.about-hero::before,
+.features-hero::before,
+.pricing-hero::before,
+.contact-hero::before {
+  opacity: 0.12 !important;
+}
+
+.section-title,
+.section-subtitle,
+.hero-subtitle,
+.hero p,
+.about-hero p,
+.features-hero p,
+.pricing-hero p,
+.contact-hero p,
+.muted,
+.text-light,
+.description,
+.section-description {
+  color: var(--text-light) !important;
+}
+
+.feature-card,
+.benefit-card,
+.plan-card,
+.contact-form,
+.contact-info,
+.social-card,
+.mission-card,
+.value-card,
+.panel,
+.status,
+.auth-shell,
+.auth-main,
+.auth-aside,
+.chat-container,
+.chat-input-container,
+.chat-header,
+.dashboard-card,
+.quick,
+.card,
+.info-card,
+.pricing-card,
+.faq-item {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+  backdrop-filter: blur(10px);
+}
+
+.dark-theme .feature-card,
+.dark-theme .benefit-card,
+.dark-theme .plan-card,
+.dark-theme .contact-form,
+.dark-theme .contact-info,
+.dark-theme .social-card,
+.dark-theme .mission-card,
+.dark-theme .value-card,
+.dark-theme .panel,
+.dark-theme .status,
+.dark-theme .auth-shell,
+.dark-theme .auth-main,
+.dark-theme .auth-aside,
+.dark-theme .chat-container,
+.dark-theme .chat-input-container,
+.dark-theme .chat-header,
+.dark-theme .dashboard-card,
+.dark-theme .quick,
+.dark-theme .card,
+.dark-theme .info-card,
+.dark-theme .pricing-card,
+.dark-theme .faq-item {
+  background: rgba(23, 40, 59, 0.92) !important;
+  border-color: var(--border) !important;
+}
+
+.status-badge {
+  background: rgba(15, 110, 158, 0.14) !important;
+  border-color: rgba(15, 110, 158, 0.24) !important;
+  color: var(--secondary) !important;
+}
+
+.profile-dropdown {
+  background: var(--white) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.profile-dropdown a:hover,
+.profile-dropdown button:hover {
+  background: rgba(15, 110, 158, 0.08) !important;
+}
+
+.chat-input {
+  background: var(--background) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+.chat-input:focus,
+.contact-form input:focus,
+.contact-form textarea:focus,
+.auth-main input:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(15, 110, 158, 0.14) !important;
+}
+
+.chat-messages {
+  scroll-behavior: smooth;
+}
+
+.message.user .message-content {
+  background: linear-gradient(135deg, var(--primary), #1f8ac0) !important;
+}
+
+.message.bot .message-content {
+  background: var(--white) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.footer,
+footer {
+  background: rgba(21, 35, 58, 0.96) !important;
+  color: #fff !important;
+}
+
+.footer a,
+footer a {
+  color: #d8edf8 !important;
+}
+
+.section-title,
+.hero h1,
+.about-hero h1,
+.features-hero h1,
+.pricing-hero h1,
+.contact-hero h1 {
+  color: var(--text) !important;
+}
+
+.about-hero h1,
+.features-hero h1,
+.pricing-hero h1,
+.contact-hero h1,
+.about-hero p,
+.features-hero p,
+.pricing-hero p,
+.contact-hero p {
+  color: #fff !important;
+}
+
+.hero,
+.hero-content,
+.hero-image {
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-inline: 12px;
+  }
+
+  header {
+    padding-block: 14px;
+  }
+
+  .hero,
+  .about-hero,
+  .features-hero,
+  .pricing-hero,
+  .contact-hero {
+    padding-block: 72px 48px !important;
+  }
+}
